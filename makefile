@@ -23,6 +23,8 @@
 CC = g++
 RM = rm -rf
 
+HOST = $(shell uname)
+
 INCLUDE_DIR = -I./include
 BUILD_DIR = target
 
@@ -37,7 +39,12 @@ all: $(TEST_BIN)
 
 $(TEST_BIN): $(TEST_OBJS)
 	mkdir -p $(BUILD_DIR)
-	$(CC)  -o $(BUILD_DIR)/$(TEST_BIN) $(TEST_OBJS)
+ifeq ($(HOST), Linux)
+	$(CC) -rdynamic -ldl -o $(BUILD_DIR)/$(TEST_BIN) $(TEST_OBJS)
+endif
+ifeq ($(HOST), Darwin)
+	$(CC) -o $(BUILD_DIR)/$(TEST_BIN) $(TEST_OBJS)
+endif
 
 clean:
 	$(RM) $(TEST_OBJS)

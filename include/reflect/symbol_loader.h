@@ -23,6 +23,8 @@
 #ifndef REFLECT_SYMBOL_LOADER
 #define REFLECT_SYMBOL_LOADER
 
+#include <dlfcn.h>
+
 namespace rf {
 
 typedef void *(*func_t)();
