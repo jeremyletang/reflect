@@ -25,7 +25,7 @@ RM = rm -rf
 
 HOST = $(shell uname)
 
-INCLUDE_DIR = -I./include
+INCLUDE_DIR = -Iinclude
 BUILD_DIR = target
 
 TEST_BIN = reflect_test
@@ -33,7 +33,7 @@ TEST_SRC_DIR = example
 TEST_SRCS = $(wildcard $(TEST_SRC_DIR)/*.cpp)
 TEST_OBJS = $(subst .cpp,.o,$(TEST_SRCS))
 
-CXXFLAGS = $(INCLUDE_DIR) --std=c++11
+CXXFLAGS = -Wall --std=c++11 $(INCLUDE_DIR)
 
 all: $(TEST_BIN)
 
