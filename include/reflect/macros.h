@@ -26,12 +26,54 @@
 #include <iostream>
 #include <functional>
 
-#define rtti_type(type) \
+// type
+
+#define _rtti_type_1(arg1) \
 extern "C" { \
-    void *_instanciate_reflectable_type_##type() { \
-        return new type(); \
+    void *_instanciate_reflectable_type_##arg1() { \
+        return new arg1(); \
     } \
-} \
+}
+
+#define _rtti_type_2(arg1, arg2) \
+extern "C" { \
+    void *_instanciate_reflectable_type_##arg1##_##arg2() { \
+        return new arg1::arg2(); \
+    } \
+}
+
+#define _rtti_type_3(arg1, arg2, arg3) \
+extern "C" { \
+    void *_instanciate_reflectable_type_##arg1##_##arg2##_##arg3() { \
+        return new arg1::arg2::arg3(); \
+    } \
+}
+
+#define _rtti_type_4(arg1, arg2, arg3, arg4) \
+extern "C" { \
+    void *_instanciate_reflectable_type_##arg1##_##arg2##_##arg3##_##arg4() { \
+        return new arg1::arg2::arg3::arg4(); \
+    } \
+}
+
+#define _rtti_type_5(arg1, arg2, arg3, arg4, arg5) \
+extern "C" { \
+    void *_instanciate_reflectable_type_##arg1##_##arg2##_##arg3##_##arg4##_##arg5() { \
+        return new arg1::arg2::arg3::arg4::arg5(); \
+    } \
+}
+
+#define narg(...) narg_(__VA_ARGS__, rseq_n())
+#define narg_(...) arg_n(__VA_ARGS__)
+#define arg_n(_1, _2, _3, _4, _5, N, ...) N
+#define rseq_n() 5, 4, 3, 2, 1, 0
+
+#define concatenate(arg1, arg2) arg1##arg2
+
+#define _rtti_type(N, ...) concatenate(_rtti_type_, N)(__VA_ARGS__)
+#define rtti_type(...) _rtti_type(narg(__VA_ARGS__), __VA_ARGS__)
+
+// method
 
 #define rtti_method(type, method, ret, ...) \
 extern "C" { \
@@ -40,6 +82,8 @@ extern "C" { \
         return func; \
     } \
 } \
+
+// field
 
 #define rtti_field(type, field_type, field_name) \
 extern "C" { \

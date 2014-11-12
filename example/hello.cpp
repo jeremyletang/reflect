@@ -8,5 +8,6 @@ struct hello_t {
 };
 
 rtti_type(hello_t);
+rtti_type(std, string);
 rtti_method(hello_t, say_hello, void);
 rtti_field(hello_t, int, i_var);
