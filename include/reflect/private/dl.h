@@ -20,8 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef REFLECT_SYMBOL_LOADER
-#define REFLECT_SYMBOL_LOADER
+#ifndef REFLECT_DL
+#define REFLECT_DL
 
 #include <dlfcn.h>
 
@@ -31,13 +31,13 @@ typedef void *(*func_t)();
 typedef void *(*meth_t)(void*);
 typedef void *(**addr_func_t)();
 
-class symbol_loader {
+class dl {
 
 private:
 
     void *handle = nullptr;
 
-    symbol_loader()
+    dl()
     : handle(nullptr) {}
 
     void* make_handle() {
@@ -50,17 +50,18 @@ private:
 
         // clear error
         dlerror();
+
         return handle_tmp;
     }
 
 public:
 
-    ~symbol_loader() {
+    ~dl() {
         dlclose(this->handle);
     }
 
-    static symbol_loader &get_instance() {
-            static symbol_loader self;
+    static dl &get_instance() {
+            static dl self;
             return self;
     }
 

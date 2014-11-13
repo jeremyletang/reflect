@@ -29,7 +29,7 @@
 
 #include "object.h"
 #include "method.h"
-#include "symbol_loader.h"
+#include "private/dl.h"
 
 #define name_prefix "_instanciate_reflectable_type_";
 #define method_prefix "_method_reflectable_"
@@ -56,26 +56,11 @@ public:
 
         class_tmp.name = class_name;
 
-        // // get handle
-        // class_tmp.handle = dlopen(NULL, RTLD_LAZY);
-        // if (class_tmp.handle == nullptr) {
-        //     // std::cerr << "reflect error: cannot start runtime" << std::endl;
-        //     return class_tmp;
-        // }
-
-        // // clear error
-        // dlerror();
-
         // load function constructor
         std::string fn_name = name_prefix;
         fn_name += class_tmp.name;
-        // *(void **) (&class_tmp.constructor) = dlsym(class_tmp.handle, fn_name.c_str());
-        class_tmp.constructor = symbol_loader::get_instance().get_constructor(fn_name);
 
-        // if ((class_tmp.error = dlerror()) != NULL)  {
-        //     // std::cerr << "reflect error, cannot instanciate class " << class_name << std::endl;
-        //     return class_tmp;
-        // }
+        class_tmp.constructor = dl::get_instance().get_constructor(fn_name);
 
         return class_tmp;
     }
@@ -98,13 +83,7 @@ public:
         fn_name += method_name;
         fn_name += "_";
         fn_name += this->name;
-        // *(void **) (&ptr_method) = dlsym(this->handle, fn_name.c_str());
-        ptr_method = symbol_loader::get_instance().get_method(fn_name);
-
-        // if ((this->error = dlerror()) != NULL)  {
-            // std::cerr << "reflect error, cannot instanciate class " << class_name << std::endl;
-            // return method_t(method_name, nullptr);
-        // }
+        ptr_method = dl::get_instance().get_method(fn_name);
 
         return method_t(method_name, ptr_method);
     }

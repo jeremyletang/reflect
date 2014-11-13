@@ -16,5 +16,4 @@ main() {
     rf::method_t method2 = klass.get_method("multiply_by_two");
     if (method2 == nullptr) { std::cout << "multiply_by_two don't exist" << std::endl; }
     else { std::cout << method2.invoke<int>(object, 42) << std::endl; }
-
 }

@@ -50,6 +50,14 @@ ifeq ($(HOST), Darwin)
 	$(CC) -o $(BUILD_DIR)/$(TEST_BIN) $(TEST_OBJS)
 endif
 
+pre:
+ifeq ($(HOST), Linux)
+	$(CC) -rdynamic -ldl -o $(BUILD_DIR)/$(TEST_BIN) $(TEST_OBJS)
+endif
+ifeq ($(HOST), Darwin)
+	$(CC) -E $(INCLUDE_DIR) $(TEST_SRCS)
+endif
+
 clean:
 	$(RM) $(TEST_OBJS)
 
