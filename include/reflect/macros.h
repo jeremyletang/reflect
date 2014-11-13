@@ -83,7 +83,7 @@ extern "C" { \
     } \
 } \
 
-#define _rtti_method_2(type, method, ret, __VA_ARGS__) \
+#define _rtti_method_2(type, method, ret, ...) \
 extern "C" { \
     std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
         std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1); \
@@ -91,7 +91,7 @@ extern "C" { \
     } \
 } \
 
-#define _rtti_method_3(type, method, ret, __VA_ARGS__) \
+#define _rtti_method_3(type, method, ret, ...) \
 extern "C" { \
     std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
         std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1, std::placeholders::_2); \
@@ -99,7 +99,7 @@ extern "C" { \
     } \
 } \
 
-#define _rtti_method_4(type, method, ret, __VA_ARGS__) \
+#define _rtti_method_4(type, method, ret, ...) \
 extern "C" { \
     std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
         std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3); \
@@ -107,7 +107,7 @@ extern "C" { \
     } \
 } \
 
-#define _rtti_method_5(type, method, ret, __VA_ARGS__) \
+#define _rtti_method_5(type, method, ret, ...) \
 extern "C" { \
     std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
         std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4); \
