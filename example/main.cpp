@@ -10,7 +10,11 @@ main() {
     rf::object_t object = klass.new_instance();
     if (klass == nullptr) { std::cout << "klass null" << std::endl; }
     if (object == nullptr) { std::cout << "object null" << std::endl; }
-    rf::method_t method = klass.get_method("say_hello");
-    if (object == nullptr) { std::cout << "method null" << std::endl; }
-    else { method.invoke(object); }
+    rf::method_t method1 = klass.get_method("say_hello");
+    if (method1 == nullptr) { std::cout << "say_hello don't exist" << std::endl; }
+    else { method1.invoke(object); }
+    rf::method_t method2 = klass.get_method("multiply_by_two");
+    if (method2 == nullptr) { std::cout << "multiply_by_two don't exist" << std::endl; }
+    else { std::cout << method2.invoke<int>(object, 42) << std::endl; }
+
 }

@@ -35,6 +35,10 @@ TEST_OBJS = $(subst .cpp,.o,$(TEST_SRCS))
 
 CXXFLAGS = -Wall --std=c++11 $(INCLUDE_DIR)
 
+ifeq ($(HOST), Darwin)
+CXXFLAGS += -Wno-return-type-c-linkage
+endif
+
 all: $(TEST_BIN)
 
 $(TEST_BIN): $(TEST_OBJS)

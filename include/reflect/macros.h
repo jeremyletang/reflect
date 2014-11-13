@@ -75,13 +75,48 @@ extern "C" { \
 
 // method
 
-#define rtti_method(type, method, ret, ...) \
+#define _rtti_method_1(type, method, ret) \
 extern "C" { \
-    std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
-        std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance)); \
+    std::function<ret ()> _method_reflectable_##method##_##type(void *instance) { \
+        std::function<ret ()> func = std::bind(&type::method, static_cast<type *>(instance)); \
         return func; \
     } \
 } \
+
+#define _rtti_method_2(type, method, ret, __VA_ARGS__) \
+extern "C" { \
+    std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
+        std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1); \
+        return func; \
+    } \
+} \
+
+#define _rtti_method_3(type, method, ret, __VA_ARGS__) \
+extern "C" { \
+    std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
+        std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1, std::placeholders::_2); \
+        return func; \
+    } \
+} \
+
+#define _rtti_method_4(type, method, ret, __VA_ARGS__) \
+extern "C" { \
+    std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
+        std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3); \
+        return func; \
+    } \
+} \
+
+#define _rtti_method_5(type, method, ret, __VA_ARGS__) \
+extern "C" { \
+    std::function<ret (__VA_ARGS__)> _method_reflectable_##method##_##type(void *instance) { \
+        std::function<ret (__VA_ARGS__)> func = std::bind(&type::method, static_cast<type *>(instance), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4); \
+        return func; \
+    } \
+} \
+
+#define _rtti_method(N, type, method, ...) concatenate(_rtti_method_, N)(type, method, __VA_ARGS__)
+#define rtti_method(type, method, ...) _rtti_method(narg(__VA_ARGS__), type, method, __VA_ARGS__)
 
 // field
 
