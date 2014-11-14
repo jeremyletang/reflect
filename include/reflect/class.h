@@ -28,6 +28,7 @@
 #include <dlfcn.h>
 
 #include "object.h"
+#include "method.h"
 #include "private/dl.h"
 
 #define name_prefix "_instanciate_reflectable_type_";
@@ -71,6 +72,19 @@ public:
         }
 
         return object_t(this->name, ptr_instance);
+    }
+
+    method_t get_method(std::string method_name) {
+        void *(*ptr_method)(void*) = nullptr;
+
+        // load function method
+        std::string fn_name = method_prefix;
+        fn_name += method_name;
+        fn_name += "_";
+        fn_name += this->name;
+        ptr_method = dl::get_instance().get_method(fn_name);
+
+        return method_t(method_name, ptr_method);
     }
 
     friend bool operator==(std::nullptr_t nullp, class_t &c);

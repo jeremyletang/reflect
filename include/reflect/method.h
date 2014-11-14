@@ -24,16 +24,14 @@
 #define REFLECT_METHOD
 
 #include <functional>
-#include "object.h"
 #include "class.h"
+#include "object.h"
 
 namespace rf {
 
-class object_t;
-
 class method_t {
 
-    friend class object_t;
+    friend class class_t;
 
 private:
 
@@ -48,7 +46,11 @@ public:
     void *(*ptr)(void*) = nullptr;
 
     template<typename R = void, class ...P>
-    R invoke(object_t &o, P... params);
+    R invoke(object_t &o, P... params) {
+        std::function<R(P...)> (*func)(void*) = (std::function<R(P...)> (*)(void*))this->ptr;
+        auto fn = func(o.get_ptr());
+        return fn(params...);
+    }
 
     friend bool operator==(std::nullptr_t nullp, method_t &c);
     friend bool operator==(method_t &c, std::nullptr_t nullp);
@@ -76,6 +78,9 @@ bool
 operator!=(method_t &c, std::nullptr_t nullp) {
     return c.ptr != nullptr;
 }
+
+// FIXME
+// to_string, get_name, get_return_type, get_parameters_type, ==
 
 }
 
