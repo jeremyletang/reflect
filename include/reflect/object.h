@@ -24,8 +24,12 @@
 #define REFLECT_OBJECT
 
 #include "class.h"
+#include "method.h"
+#include "private/dl.h"
 
 namespace rf {
+
+#define method_prefix "_method_reflectable_"
 
 class object_t {
 
@@ -50,23 +54,18 @@ public:
         return this->ptr;
     }
 
-    // method_t get_method(std::string method_name) {
-    //     void (*ptr_method)(void*) = nullptr;
+    method_t get_method(std::string method_name) {
+        void *(*ptr_method)(void*) = nullptr;
 
-    //     // load function method
-    //     std::string fn_name = method_prefix;
-    //     fn_name += method_name;
-    //     fn_name += "_";
-    //     fn_name += this->name;
-    //     *(void **) (&ptr_method) = dlsym(this->handle, fn_name.c_str());
+        // load function method
+        std::string fn_name = method_prefix;
+        fn_name += method_name;
+        fn_name += "_";
+        fn_name += this->name;
+        ptr_method = dl::get_instance().get_method(fn_name);
 
-    //     if ((this->error = dlerror()) != NULL)  {
-    //         // std::cerr << "reflect error, cannot instanciate class " << class_name << std::endl;
-    //         return method_t(method_name, nullptr);
-    //     }
-
-    //     return method_t(method_name, ptr_method);
-    // }
+        return method_t(method_name, ptr_method);
+    }
 
     friend bool operator==(std::nullptr_t nullp, object_t &c);
     friend bool operator==(object_t &c, std::nullptr_t nullp);
@@ -93,6 +92,14 @@ operator!=(std::nullptr_t nullp, object_t &o) {
 bool
 operator!=(object_t &o, std::nullptr_t nullp) {
     return o.ptr != nullptr;
+}
+
+// method_t::invoke implementation
+template<typename R, class ...P>
+R method_t::invoke(object_t &o, P... params) {
+    std::function<R(P...)> (*func)(void*) = (std::function<R(P...)> (*)(void*))this->ptr;
+    auto fn = func(o.get_ptr());
+    return fn(params...);
 }
 
 }

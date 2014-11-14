@@ -29,9 +29,11 @@
 
 namespace rf {
 
+class object_t;
+
 class method_t {
 
-    friend class class_t;
+    friend class object_t;
 
 private:
 
@@ -46,11 +48,7 @@ public:
     void *(*ptr)(void*) = nullptr;
 
     template<typename R = void, class ...P>
-    R invoke(object_t &o, P... params) {
-        std::function<R(P...)> (*func)(void*) = (std::function<R(P...)> (*)(void*))this->ptr;
-        auto fn = func(o.get_ptr());
-        return fn(params...);
-    }
+    R invoke(object_t &o, P... params);
 
     friend bool operator==(std::nullptr_t nullp, method_t &c);
     friend bool operator==(method_t &c, std::nullptr_t nullp);
