@@ -18,4 +18,11 @@ main() {
     if (method2 == nullptr) { std::cout << "multiply_by_two don't exist" << std::endl; }
     else { std::cout << method2.invoke<int>(object, 42) << std::endl; }
     std::cout << method2.to_string() << std::endl;
+
+    if (method2 != method1) {
+        std::cout << "methods are different" << std::endl;
+    }
+    if (object != object) {
+        std::cout << "objects are different" << std::endl;
+    }
 }

@@ -50,10 +50,18 @@ public:
         return this->ptr;
     }
 
-    friend bool operator==(std::nullptr_t nullp, object_t &c);
-    friend bool operator==(object_t &c, std::nullptr_t nullp);
-    friend bool operator!=(std::nullptr_t nullp, object_t &c);
-    friend bool operator!=(object_t &c, std::nullptr_t nullp);
+    bool operator==(object_t &oth) {
+        return this->ptr == oth.ptr;
+    }
+
+    bool operator!=(object_t &oth) {
+        return this->ptr != oth.ptr;
+    }
+
+    friend bool operator==(std::nullptr_t nullp, object_t &o);
+    friend bool operator==(object_t &o, std::nullptr_t nullp);
+    friend bool operator!=(std::nullptr_t nullp, object_t &o);
+    friend bool operator!=(object_t &o, std::nullptr_t nullp);
 
 };
 

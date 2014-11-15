@@ -105,6 +105,14 @@ public:
         return this->parameters_type_;
     }
 
+    bool operator==(method_t &oth) {
+        return this->ptr == oth.ptr;
+    }
+
+    bool operator!=(method_t &oth) {
+        return this->ptr != oth.ptr;
+    }
+
     friend bool operator==(std::nullptr_t nullp, method_t &c);
     friend bool operator==(method_t &c, std::nullptr_t nullp);
     friend bool operator!=(std::nullptr_t nullp, method_t &c);
