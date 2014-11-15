@@ -13,7 +13,9 @@ main() {
     rf::method_t method1 = klass.get_method("say_hello");
     if (method1 == nullptr) { std::cout << "say_hello don't exist" << std::endl; }
     else { method1.invoke(object); }
+    std::cout << method1.to_string() << std::endl;
     rf::method_t method2 = klass.get_method("multiply_by_two");
     if (method2 == nullptr) { std::cout << "multiply_by_two don't exist" << std::endl; }
     else { std::cout << method2.invoke<int>(object, 42) << std::endl; }
+    std::cout << method2.to_string() << std::endl;
 }

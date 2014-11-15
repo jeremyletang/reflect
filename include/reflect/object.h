@@ -24,11 +24,8 @@
 #define REFLECT_OBJECT
 
 #include "class.h"
-#include "private/dl.h"
 
 namespace rf {
-
-#define method_prefix "_method_reflectable_"
 
 class object_t {
 
@@ -36,12 +33,12 @@ class object_t {
 
 private:
 
-    std::string name;
+    std::string type_name;
     void *ptr;
 
     object_t() = delete;
-    object_t(std::string name, void *ptr)
-    : name(name), ptr(ptr) {}
+    object_t(std::string type_name, void *ptr)
+    : type_name(type_name), ptr(ptr) {}
 
 public:
 
@@ -79,6 +76,8 @@ bool
 operator!=(object_t &o, std::nullptr_t nullp) {
     return o.ptr != nullptr;
 }
+
+// FIXEM: get_class() -> class_t, get_name, == 
 
 }
 

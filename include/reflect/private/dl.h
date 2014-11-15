@@ -29,7 +29,7 @@ namespace rf {
 
 typedef void *(*func_t)();
 typedef void *(*meth_t)(void*);
-typedef void *(**addr_func_t)();
+typedef const char *(*meth_to_string_t)();
 
 class dl {
 
@@ -43,10 +43,6 @@ private:
     void* make_handle() {
         // get handle
         void *handle_tmp = dlopen(NULL, RTLD_LAZY);
-        // if (this->handle == nullptr) {
-            // std::cerr << "reflect error: cannot start runtime" << std::endl;
-            // return class_tmp;
-        // }
 
         // clear error
         dlerror();
@@ -79,6 +75,15 @@ public:
             return nullptr;
         }
         void *(*method)(void*) = nullptr;
+        *(void **) (&method) = dlsym(this->handle, symbol.c_str());
+        return method;
+    }
+
+    meth_to_string_t get_method_to_string(std::string symbol) {
+        if (this->handle == nullptr && (this->handle = this->make_handle()) == nullptr) {
+            return nullptr;
+        }
+        const char *(*method)() = nullptr;
         *(void **) (&method) = dlsym(this->handle, symbol.c_str());
         return method;
     }

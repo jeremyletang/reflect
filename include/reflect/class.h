@@ -31,9 +31,10 @@
 #include "method.h"
 #include "private/dl.h"
 
-#define name_prefix "_instanciate_reflectable_type_";
-
 namespace rf {
+
+#define name_prefix "_instanciate_reflectable_type_";
+#define method_prefix "_method_reflectable_"
 
 class class_t {
 
@@ -84,7 +85,7 @@ public:
         fn_name += this->name;
         ptr_method = dl::get_instance().get_method(fn_name);
 
-        return method_t(method_name, ptr_method);
+        return method_t(method_name, this->name, ptr_method);
     }
 
     friend bool operator==(std::nullptr_t nullp, class_t &c);
@@ -113,6 +114,8 @@ bool
 operator!=(class_t &c, std::nullptr_t nullp) {
     return c.constructor != nullptr;
 }
+
+// FIXME: is_instance(Object obj), get_name, to_string
 
 }
 
