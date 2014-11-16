@@ -20,11 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#ifndef REFLECT_CLASS
-#define REFLECT_CLASS
+#ifndef REFLECT_FIELD
+#define REFLECT_FIELD
 
 #include <string>
 #include "class.h"
+#include "object.h"
 
 namespace rf {
 
@@ -34,46 +35,65 @@ class field_t {
 
 private:
 
-    std::string name;
-    void *ptr = nullptr;
+    std::string name_;
+    std::string type_name_;
+    void *(*ptr)(void*) = nullptr;
 
     field_t() = delete;
-    field_t(std::string name, void *ptr)
-    : name(name), ptr(ptr) {}
+    field_t(std::string name, std::string type_name, void *(*ptr)(void*))
+    : name_(name), type_name_(type_name), ptr(ptr) {}
 
 public:
 
     template<typename T>
-    T &get() {
-
+    T &get(object_t &o) {
+        T &(*func)(void*) = (T &(*)(void*))this->ptr;
+        T &field = func(o.get_ptr());
+        return field;
     }
 
-    friend bool operator==(std::nullptr_t nullp, field_t &c);
-    friend bool operator==(field_t &c, std::nullptr_t nullp);
-    friend bool operator!=(std::nullptr_t nullp, field_t &c);
-    friend bool operator!=(field_t &c, std::nullptr_t nullp);
+    std::string &get_name() {
+        return this->name_;
+    }
+
+    std::string &type_name() {
+        return this->type_name_;
+    }
+
+    bool operator==(field_t &oth) {
+        return this->ptr == oth.ptr;
+    }
+
+    bool operator!=(field_t &oth) {
+        return this->ptr == oth.ptr;
+    }
+
+    friend bool operator==(std::nullptr_t nullp, field_t &f);
+    friend bool operator==(field_t &f, std::nullptr_t nullp);
+    friend bool operator!=(std::nullptr_t nullp, field_t &f);
+    friend bool operator!=(field_t &f, std::nullptr_t nullp);
 
 };
 
 
 bool
-operator==(std::nullptr_t nullp, field_t &c) {
-    return c.ptr == nullptr;
+operator==(std::nullptr_t nullp, field_t &f) {
+    return f.ptr == nullptr;
 }
 
 bool
-operator==(field_t &c, std::nullptr_t nullp) {
-    return c.ptr == nullptr;
+operator==(field_t &f, std::nullptr_t nullp) {
+    return f.ptr == nullptr;
 }
 
 bool
-operator!=(std::nullptr_t nullp, field_t &c) {
-    return c.ptr != nullptr;
+operator!=(std::nullptr_t nullp, field_t &f) {
+    return f.ptr != nullptr;
 }
 
 bool
-operator!=(field_t &c, std::nullptr_t nullp) {
-    return c.ptr != nullptr;
+operator!=(field_t &f, std::nullptr_t nullp) {
+    return f.ptr != nullptr;
 }
 
 }

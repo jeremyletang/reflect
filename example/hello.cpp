@@ -1,7 +1,7 @@
 #include <reflect/macros>
 
 struct hello_t {
-    int i_var = 0;
+    int i_var = 256;
     void say_hello() {
         std::cout << "hello world from reflected function" << std::endl;
     }

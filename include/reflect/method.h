@@ -40,7 +40,7 @@ class method_t {
 private:
 
     std::string name_;
-    std::string type_name;
+    std::string type_name_;
     void *(*ptr)(void*) = nullptr;
 
     std::string to_string_ = "";
@@ -49,7 +49,7 @@ private:
 
     method_t() = delete;
     method_t(std::string name, std::string type_name, void *(*ptr)(void*))
-    : name_(name), type_name(type_name), ptr(ptr) {}
+    : name_(name), type_name_(type_name), ptr(ptr) {}
 
 public:
 
@@ -62,6 +62,10 @@ public:
 
     std::string &name() {
         return this->name_;
+    }
+
+    std::string &type_name() {
+        return this->type_name_;
     }
 
     std::string &to_string() {
@@ -83,7 +87,7 @@ public:
             std::string fn_name = method_return_type_prefix;
             fn_name += this->name_;
             fn_name += "_";
-            fn_name += this->type_name;
+            fn_name += this->type_name_;
             ptr_method = priv::dl::get_instance().get_method_to_string(fn_name);
             this->return_type_ = ptr_method();
         }
@@ -97,7 +101,7 @@ public:
             std::string fn_name = method_parameters_type_prefix;
             fn_name += this->name_;
             fn_name += "_";
-            fn_name += this->type_name;
+            fn_name += this->type_name_;
             ptr_method = priv::dl::get_instance().get_method_to_string(fn_name);
             this->parameters_type_ = ptr_method();
         }

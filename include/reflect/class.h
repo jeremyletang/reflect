@@ -29,12 +29,14 @@
 
 #include "object.h"
 #include "method.h"
+#include "field.h"
 #include "private/dl.h"
 
 namespace rf {
 
 #define name_prefix "_instanciate_reflectable_type_";
 #define method_prefix "_method_reflectable_"
+#define field_prefix "_field_reflectable_"
 
 class class_t {
 
@@ -86,6 +88,19 @@ public:
         ptr_method = priv::dl::get_instance().get_method(fn_name);
 
         return method_t(method_name, this->name, ptr_method);
+    }
+
+    field_t get_field(std::string field_name) {
+        void *(*ptr_method)(void*) = nullptr;
+
+        // load function method
+        std::string fn_name = field_prefix;
+        fn_name += field_name;
+        fn_name += "_";
+        fn_name += this->name;
+        ptr_method = priv::dl::get_instance().get_method(fn_name);
+
+        return field_t(field_name, this->name, ptr_method);
     }
 
     friend bool operator==(std::nullptr_t nullp, class_t &c);
