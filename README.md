@@ -6,9 +6,7 @@ C++ reflection framework (for fun)
 simple example:
 
 ```cpp
-#include <reflect/class.h>
-#include <reflect/object.h>
-#include <reflect/method.h>
+#include <reflect/reflect>
 
 int
 main() {

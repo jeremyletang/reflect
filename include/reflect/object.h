@@ -33,12 +33,12 @@ class object_t {
 
 private:
 
-    std::string type_name;
+    std::string type_name_;
     void *ptr;
 
     object_t() = delete;
     object_t(std::string type_name, void *ptr)
-    : type_name(type_name), ptr(ptr) {}
+    : type_name_(type_name), ptr(ptr) {}
 
 public:
 
@@ -48,6 +48,10 @@ public:
 
     void *get_ptr() {
         return this->ptr;
+    }
+
+    std::string &type_name() {
+        return this->type_name_;
     }
 
     bool operator==(object_t &oth) {
@@ -85,7 +89,7 @@ operator!=(object_t &o, std::nullptr_t nullp) {
     return o.ptr != nullptr;
 }
 
-// FIXEM: get_class() -> class_t, get_name, == 
+// FIXEM: get_class() -> class_t,
 
 }
 
