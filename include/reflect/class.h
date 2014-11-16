@@ -60,7 +60,7 @@ public:
         std::string fn_name = name_prefix;
         fn_name += class_tmp.name;
 
-        class_tmp.constructor = dl::get_instance().get_constructor(fn_name);
+        class_tmp.constructor = priv::dl::get_instance().get_constructor(fn_name);
 
         return class_tmp;
     }
@@ -83,7 +83,7 @@ public:
         fn_name += method_name;
         fn_name += "_";
         fn_name += this->name;
-        ptr_method = dl::get_instance().get_method(fn_name);
+        ptr_method = priv::dl::get_instance().get_method(fn_name);
 
         return method_t(method_name, this->name, ptr_method);
     }

@@ -27,6 +27,8 @@
 
 namespace rf {
 
+namespace priv {
+
 typedef void *(*func_t)();
 typedef void *(*meth_t)(void*);
 typedef const char *(*meth_to_string_t)();
@@ -89,6 +91,8 @@ public:
     }
 
 };
+
+}
 
 }
 

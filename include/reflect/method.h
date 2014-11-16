@@ -84,7 +84,7 @@ public:
             fn_name += this->name_;
             fn_name += "_";
             fn_name += this->type_name;
-            ptr_method = dl::get_instance().get_method_to_string(fn_name);
+            ptr_method = priv::dl::get_instance().get_method_to_string(fn_name);
             this->return_type_ = ptr_method();
         }
 
@@ -98,7 +98,7 @@ public:
             fn_name += this->name_;
             fn_name += "_";
             fn_name += this->type_name;
-            ptr_method = dl::get_instance().get_method_to_string(fn_name);
+            ptr_method = priv::dl::get_instance().get_method_to_string(fn_name);
             this->parameters_type_ = ptr_method();
         }
 
